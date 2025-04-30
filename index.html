@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Jogos Vorazes - Torneio</title>
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #eee;
+      padding: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 10px;
+      background: #222;
+      color: #fff;
+      border: none;
+      padding: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    .evento {
+      margin: 10px 0;
+    }
+
+    .rodada {
+      margin-top: 30px;
+      border-top: 1px solid #444;
+      padding-top: 10px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #000000;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🔥 Jogos Vorazes - Simulador de Torneio</h1>
+  <label>Digite os participantes (um por linha):</label>
+  <textarea id="lutadores" placeholder="Exemplo:\nKatniss\nPeeta\nCato\nRue"></textarea>
+  <br>
+  <button onclick="iniciarJogos()">Iniciar Jogos</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const motivos = [
+      "com veneno escondido na comida",
+      "ao deixá-lo sem água por dias",
+      "em uma explosão planejada",
+      "com um ataque surpresa vindo das árvores",
+      "com uma lança improvisada",
+      "com um ataque fulminante",
+      "usando um escorpião dentro do saco de dormir",
+      "numa luta dentro de uma caverna",
+      "em uma luta de emboscada noturna",
+      "depois de uma longa perseguição",
+      "com um golpe certeiro no coração",
+      "com uma corda amarrada ao tornozelo",
+      "após confundir seus passos na floresta",
+      "depois de um plano engenhoso",
+      "com uma garra improvisada",
+      "no calor de uma emboscada",
+      "com uma rede de espinhos",
+      "ao empurrá-lo para dentro do fogo",
+      "com um tiro certeiro",
+      "após vencê-lo numa armadilha de poço",
+      "usando o som para distraí-lo",
+      "usando fogo para encurralar",
+      "após sabotar seu abrigo",
+      "com uma pedra na cabeça",
+      "após cair numa emboscada",
+      "durante uma tempestade",
+      "num campo de minas",
+      "com um galho afiado",
+      "com uma flechada certeira",
+      "ao empurrá-lo de um penhasco",
+      "depois de ser traído por outro tributo",
+      "usando uma armadilha de cipó",
+      "enquanto dormia",
+      "com um ataque rápido e letal",
+      "com um golpe traiçoeiro pelas costas",
+      "fazendo ele tropeçar e cair",
+      "num ataque covarde",
+      "em uma luta corpo a corpo brutal",
+      "num ataque de fúria",
+      "em um combate no rio",
+      "com um golpe silencioso",
+      "usando o ambiente a seu favor",
+      "em um duelo sangrento",
+      "usando armadilhas mecânicas",
+      "com um machado rudimentar",
+      "em uma armadilha de areia movediça",
+      "depois de atraí-lo para uma armadilha",
+      "ao explodir sua cabana",
+      "após uma aliança desfeita",
+      "com um estilingue mortal"
+    ];
+
+    function embaralhar(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function iniciarJogos() {
+      const area = document.getElementById("lutadores");
+      let participantes = area.value.split("\n").map(l => l.trim()).filter(Boolean);
+
+      if (participantes.length < 2) {
+        alert("Digite pelo menos 2 participantes.");
+        return;
+      }
+
+      embaralhar(participantes);
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "<h2>Relatório dos Jogos</h2>";
+
+      let rodada = 1;
+
+      while (participantes.length > 1) {
+        const sobreviventes = [];
+        const rodadaDiv = document.createElement("div");
+        rodadaDiv.className = "rodada";
+        rodadaDiv.innerHTML = `<h3>Rodada ${rodada}</h3>`;
+
+        for (let i = 0; i < participantes.length; i += 2) {
+          const p1 = participantes[i];
+          const p2 = participantes[i + 1];
+
+          if (!p2) {
+            rodadaDiv.innerHTML += `<div class="evento">${p1} se escondeu e sobreviveu sozinho nessa rodada.</div>`;
+            sobreviventes.push(p1);
+          } else {
+            const vencedor = Math.random() < 0.5 ? p1 : p2;
+            const perdedor = vencedor === p1 ? p2 : p1;
+            const causa = motivos[Math.floor(Math.random() * motivos.length)];
+            rodadaDiv.innerHTML += `<div class="evento">${perdedor} foi eliminado por ${vencedor} ${causa}.</div>`;
+            sobreviventes.push(vencedor);
+          }
+        }
+
+        resultado.appendChild(rodadaDiv);
+        participantes = sobreviventes;
+        rodada++;
+      }
+
+      resultado.innerHTML += `<h2>🏆 Único sobrevivente dos Jogos: ${participantes[0]} 🏆</h2>`;
+    }
+  </script>
+
+</body>
+
+</html>
