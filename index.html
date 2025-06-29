@@ -46,8 +46,7 @@
 </head>
 
 <body>
-
-    <h1>🔥 Jogos Vorazes - Simulador de Torneio</h1>
+    <h1>🔥 Clube da luta 🔥 Simulador de Torneio</h1>
     <label>Digite os participantes (um por linha):</label>
     <textarea id="lutadores" placeholder="Exemplo:\nKatniss\nPeeta\nCato\nRue"></textarea>
     <br>
@@ -91,8 +90,6 @@
             "após o healer não ter aguentado curar"
         ];
 
-
-
         function embaralhar(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -114,6 +111,7 @@
             resultado.innerHTML = "<h2>Relatório dos Jogos</h2>";
 
             let rodada = 1;
+            const causas = [...motivos]
 
             while (participantes.length > 1) {
                 const sobreviventes = [];
@@ -133,8 +131,8 @@
                         const vencedor = Math.random() < 0.5 ? p1 : p2;
                         const perdedor = vencedor === p1 ? p2 : p1;
 
-                        const index = Math.floor(Math.random() * motivos.length);
-                        const causa = motivos.splice(index, 1)[0]; // remove e retorna o motivo escolhido
+                        const index = Math.floor(Math.random() * causas.length);
+                        const causa = causas.splice(index, 1)[0]; // remove e retorna o motivo escolhido
 
                         rodadaDiv.innerHTML += `<div class="evento">${perdedor} foi eliminado por ${vencedor} ${causa}.</div>`;
                         sobreviventes.push(vencedor);
@@ -149,7 +147,6 @@
             resultado.innerHTML += `<h2>🏆 Único sobrevivente dos Jogos: ${participantes[0]} 🏆</h2>`;
         }
     </script>
-
 </body>
 
 </html>
